@@ -11,7 +11,7 @@
 
 public class GameBoard
 {
-	Cell cell[]; // array of cells
+	private Cell cell[]; // array of cells
 	
 	private boolean debugVar = false;
 	
@@ -69,6 +69,8 @@ public class GameBoard
 			case EMPTY:
 				cell[coOrd].setCellState(CellState.MISS);
 				return AttackOutcome.MISS;
+			default:
+				break;
 		}
 		
 		return AttackOutcome.REGUESS;
@@ -83,8 +85,7 @@ public class GameBoard
 		// check for other ship collisions
 		if(!checkShipCollisions(inShip, inCo, direction))
 			return false;
-			
-			
+		
 		// we know it's safe at this point
 		int coOrd = inCo.toLinear(); // get the coord from [x][y] -> [coord]
 		int modifier = getModifier(direction); // this is the 
@@ -93,6 +94,7 @@ public class GameBoard
 		for(int i = 0; i < ShipInfo.getShipLength(inShip); i++)
 		{
 			cell[coOrd].setCellState(CellState.SHIP); // tell the board there's a ship
+			cell[coOrd].setShipSpace(inShip); // tell the board which ship is there
 			coOrd += modifier; // move on to next cell
 		} // end ship placement loop
 		
@@ -111,11 +113,11 @@ public class GameBoard
 					return false;
 				break;
 			case EAST:
-				if((x + ShipInfo.getShipLength(inShip)) > 9)
+				if((x + ShipInfo.getShipLength(inShip)) > 10) // bug was here, > 9
 					return false;
 				break;
 			case SOUTH:
-				if((y + ShipInfo.getShipLength(inShip)) > 9)
+				if((y + ShipInfo.getShipLength(inShip)) > 10) // bug was also here
 					return false;
 				break;
 			case WEST:
@@ -151,10 +153,12 @@ public class GameBoard
 		return ((x >= 0) && (x <= 9) && (y >= 0) && (y <= 9));
 	}
 	
+	/*
 	private void setCell(Cell theCell, CellState theCellState)
 	{
 		theCell.setCellState(theCellState);
 	}
+	*/
 	
 	private char getStateChar(int cellNumber, boolean showShips)
 	{
@@ -181,13 +185,13 @@ public class GameBoard
 			case SOUTH: return 10;
 			case WEST: return -1;
 		}
-		return 0; // never hits, java compilier complains without
+		return 0; // never hits, java compiler complains without
 	}
 	
-	private int getCoord(int x, int y)
+	/*private int getCoord(int x, int y)
 	{
 		return (y * 10) + x;
-	}
+	}*/
 	
 	public char getLetter(int rowNum)
 	{
@@ -206,7 +210,7 @@ public class GameBoard
 	
 	public CellState getCellState(int cellNum)
 	{
-		if(cellNum > 0 && cellNum < 100)
+		if(cellNum >= 0 && cellNum < 100)
 		{
 			return cell[cellNum].getCellState();
 		}

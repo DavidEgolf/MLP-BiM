@@ -4,6 +4,7 @@ import javax.swing.*; // all the UI elements
 
 public class ShipList extends JPanel
 {
+	private static final long serialVersionUID = 1L; // ECLIPSE WAT U DOING?
 	JLabel [] shipText;
 	boolean [] isSunk = new boolean[5];
 	
@@ -14,9 +15,18 @@ public class ShipList extends JPanel
 		spawnText();
 	}
 	
+	public void clearSunk()
+	{
+		for(int i = 0; i < 5; i++)
+		{
+			isSunk[i] = false;
+		}
+		this.repaint();
+	}
+	
 	private void setXY(int x, int y)
 	{
-		setBounds(x, y, 100, 200);
+		setBounds(x, y, 100, 70);
 	}
 	
 	
@@ -56,10 +66,16 @@ public class ShipList extends JPanel
         Graphics2D g2 = (Graphics2D) g;
         for(int i = 0; i < 5; i++)
         {
-			int y = i * 14 + 7;
-			Line2D lin = new Line2D.Float(0, y, 75, y);
 			if(isSunk[i])
+			{
+				int y = i * 14 + 7;
+				Line2D lin = new Line2D.Float(0, y, 75, y);
+				y++;
+				Line2D lin2 = new Line2D.Float(0, y, 75, y);
 				g2.draw(lin);
+				g2.draw(lin2);
+			}
+				
 		}
     }
 }

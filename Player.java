@@ -1,160 +1,85 @@
-/*
-	File: Player.java
-	Author: David Egolf
-	Description: This class is the superclass to CPUAI and Human. A few handled here,
-				some handled there.
-	Date: 2/27/13
-*/
-
-import java.awt.Color;
-import java.util.Random;
-
 public class Player
-{	
-	boolean cheat = false; // default to off
+{
+	boolean 		turn = false;
+	Player			enemy;
+	PlayingField	field;
+	Portrait		picture;
+	GameBoard		board = new GameBoard();
+	ShipList		list;
+	GameBoard		enemyBoard;
 	
-	Portrait charPort;
-	PlayingField field;
-	public GameBoard board = new GameBoard();
-	private ShipList list;
-	NoLayoutListener parent;
-	
-	// default constructor has little use
-	Player(NoLayoutListener in)
+	Player()
 	{
-		parent = in;
+	
 	}
 	
-	public void enemyFire()
-	{
-		parent.enemyFire();
-	}
 	
-	public void setGameBoard(GameBoard a)
-	{
-		board = a;
-	}
+	/* comment block: setters */
 	
-	public void setShipList(ShipList a)
-	{
-		list = a;
-	}
+		public void setEnemy(Player in)
+		{
+			enemy = in;
+			enemyBoard = in.getGameBoard();
+			field.setEnemyGameboard(enemyBoard);
+		}
 	
-	public ShipList getShipList()
-	{
-		return list;
-	}
+		public void setPlayingField(PlayingField in)
+		{
+			field = in;
+		}
 	
-	public void setField(PlayingField a)
-	{
-		field = a;
-		a.setParent(this);
-	}
+		public void setPortrait(Portrait in)
+		{
+			picture = in;
+		}
 	
-	public PlayingField getField()
-	{
-		return field;
-	}
+		public void setGameBoard(GameBoard in)
+		{
+			board = in;
+			field.setGameBoard(in);
+		}
 	
-	public void setPortrait(Portrait a)
-	{
-		charPort = a;
-	}
+		public void setShipList(ShipList in)
+		{
+			list = in;
+			field.setShipList(in);
+		}
 	
-	public Portrait getPortrait()
-	{
-		return charPort;
-	}
+	/* setters ended */
 	
-	public GameBoard getGameBoard()
-	{
-		return board;
-	}
+	/* comment block: getters */
 	
-	// toggleCheat does exactly like it sounds. toggles cheating mode on/off
-	public void toggleCheat()
-	{
-		cheat = !cheat; // toggle it
-	} // end toggleCheat()
+		public PlayingField getPlayingField()
+		{
+			return field;
+		}
 	
-	// printBoard prints the board using the cheat boolean to determine
-	// whether to show enemy ships
-	public void printBoard()
-	{		
+		public Portrait	getPortrait()
+		{
+			return picture;
+		}
+	
+		public GameBoard getGameBoard()
+		{
+			return board;
+		}
+	
+		public ShipList getShipList()
+		{
+			return list;
+		}
+	
+	/* getters ended */
+	
+	public void printGameBoard()
+	{
 		board.print(true);
-	} // end printBoard()
-	
-	// attack() performs an attack on a player and checks to see what happens during
-	// (what kind of outcome was the attack)
-	public AttackOutcome attack(Coord attackCoords)
-	{				
-		//return field.fire(attackCoords); 
-		return AttackOutcome.HIT;
-	} // end Attackoutcome attack(Coord attackCoords)
-	
-	// public boolean scanForWin() returns true if the player has won
-	public boolean scanForWinner()
-	{
-		//return field.didWin();
-		return false;
-	} // end scanForWin()
-	
-	public void generate()
-	{
-		BoardGenerator.generate(board);
 	}
 	
-	public void showShips()
+	public void setDisabled()
 	{
-		for(int i = 0; i < 100; i++)
-		{
-			switch(board.getCellState(i))
-			{
-				case MISS:
-					field.setColor(i, Color.YELLOW);
-				case EMPTY:
-					field.setColor(i, Color.BLUE);
-					break;
-				case HIT:
-				case SHIP:
-					field.setColor(i, Color.RED);
-			}
-		}
+		field.setDisabled();
 	}
 	
-	public void setDisabledShips()
-	{
-		
-		for(int i = 0; i < 100; i++)
-		{
-			switch(board.getCellState(i))
-			{
-				case SHIP:
-					field.setShipDisabled(i);
-				default:
-			}
-		}
-	}
 	
-	public void say(String a)
-	{
-		charPort.say(a);
-	}
-	
-	public void swapBoards()
-	{
-		parent.swapBoards();
-		field.hideShips();
-		field.redrawBoard();
-	}
-	
-	public void fire()
-	{
-		Coord attackCo = new Coord();
-		Random generator = new Random(); // need new Random object
-
-		attackCo.setX(generator.nextInt(10));
-		attackCo.setY(generator.nextInt(10));
-		
-	}
-} // end public class Player
+}

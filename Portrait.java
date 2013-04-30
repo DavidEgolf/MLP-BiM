@@ -1,18 +1,18 @@
 import javax.swing.*; // all the UI elements
-import javax.swing.event.*;
 import java.awt.geom.*;
 import java.awt.*;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
 
 public class Portrait extends JPanel
-{	
+{
+	private static final long serialVersionUID = 1L; // I CAN HAS 1L?
 	String fileName = new String();
 	Orientation whichWay;
 	JLabel speech = new JLabel();
+	private BufferedImage image;
 	
 	int portX, portY;
 	
@@ -41,6 +41,8 @@ public class Portrait extends JPanel
 			case EAST:
 				portX = 0;
 				portY = 0;
+				break;
+			default:
 				break;
 		}
 	}
@@ -76,23 +78,21 @@ public class Portrait extends JPanel
 		}
 	}
 	
-	Portrait()
-	{
-	}
-	
 	private void openImage()
 	{
        try 
-       {                
+       {
           image = ImageIO.read(this.getClass().getResource(fileName));
        } 
        catch (IOException ex)
        {
             System.out.println("Error with loading image! : " + ex);
        }
+       catch (Exception e)
+       {
+    	   System.err.println("Big error! : " + e);
+       }
 	}
-	
-	private BufferedImage image;
 	
 	public void paint(Graphics g)  
 	{  

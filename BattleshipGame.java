@@ -12,12 +12,14 @@ import javax.swing.JApplet;
 
 public class BattleshipGame extends JApplet
 {
+	private static final long serialVersionUID = 1L; // ECLIPSE WUT U DO, STAAAAHHHHHP
 	NoLayoutListener testUI;
 
 		// JApplet init() function
 	public void init()
 	{
-	
+
+		this.setSize(800,480);
 		testUI = new NoLayoutListener(getCodeBase());
 		testUI.setSize(800,480); // size it
 		this.add(testUI);
